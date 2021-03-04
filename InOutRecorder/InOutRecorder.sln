@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InOutRecorder", "InOutRecorder\InOutRecorder.csproj", "{692A65BB-F084-440D-AD95-F402ECFC667A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Debug|x64.ActiveCfg = Debug|x64
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Debug|x64.Build.0 = Debug|x64
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Release|x64.ActiveCfg = Release|x64
+		{692A65BB-F084-440D-AD95-F402ECFC667A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78A73816-B7B3-4B79-A417-A3124B6C8414}
+	EndGlobalSection
+EndGlobal
