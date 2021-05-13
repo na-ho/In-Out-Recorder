@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using System.IO;
+using NAudio.Wave.SampleProviders;
 
 namespace SelectableRecorder
 {
@@ -26,10 +27,12 @@ namespace SelectableRecorder
         private string _micPath = null;
         private string _outputPath = null;
         private string _fileOutputWavFullExt = null;
+        private MainWindow _mainWindow = null;
 
-        public SubWindowTools()
+        public SubWindowTools(MainWindow mainWindow)
         {
             InitializeComponent();
+            _mainWindow = mainWindow;
         }
 
         private void button_merge_Click(object sender, RoutedEventArgs e)
@@ -83,6 +86,7 @@ namespace SelectableRecorder
 
         public void mixing()
         {
+            /*
             var mixer = new WaveMixerStream32 { AutoStop = true };
             var wav1 = new WaveFileReader(_micPath);
             var wav2 = new WaveFileReader(_loopBackPath);
@@ -118,6 +122,58 @@ namespace SelectableRecorder
 
             _fileOutputWavFullExt = System.IO.Path.Combine(_outputPath, Path.GetFileName(_micPath).Replace("_mic", ""));
             WaveFileWriter.CreateWaveFile(_fileOutputWavFullExt, mixer);
+
+            */
+            ////////////////////////////////////////////////////////////////////////////////
+            const int rate = 48000;
+            //const int bits = 32;
+            const int channels = 2;
+            //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
+            WaveFormat wave_format = WaveFormat.CreateIeeeFloatWaveFormat(rate, channels);
+            var wav1 = new AudioFileReader(_micPath);
+            var wav2 = new AudioFileReader(_loopBackPath);
+
+            if (TextBox_LevelMic.Text.Length > 0)
+            {
+                string strLevelMic = TextBox_LevelMic.Text;
+                if (strLevelMic != "1.0")
+                {
+                    float fLevelMic = float.Parse(strLevelMic);
+                    wav1.Volume = fLevelMic;
+                }
+
+            }
+            if (TextBox_levelLoopBack.Text.Length > 0)
+            {
+                string strlevelLoopBack = TextBox_levelLoopBack.Text;
+                if (strlevelLoopBack != "1.0")
+                {
+                    float fLevelLoopBack = float.Parse(strlevelLoopBack);
+                    wav2.Volume = fLevelLoopBack;
+                }
+            }
+            var resampler2 = new MediaFoundationResampler(wav2, wave_format);
+            var mixer = new MixingSampleProvider(wave_format);
+            //      var mixer = new MixingSampleProvider(new[] { wav1, wav2 });
+            mixer.AddMixerInput(resampler2);
+            mixer.AddMixerInput(wav1.ToWaveProvider());
+
+            _outputPath = TextBox_area2.Text;
+            
+
+            this.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                if (_outputPath.Length == 0)
+                {
+                    _outputPath = _mainWindow.TextBox_path.Text;
+                    TextBox_area2.Text = _outputPath;
+
+                }
+                _fileOutputWavFullExt = System.IO.Path.Combine(_outputPath, Path.GetFileName(_micPath).Replace("_mic", ""));
+                WaveFileWriter.CreateWaveFile(_fileOutputWavFullExt, mixer.ToWaveProvider());
+            }));
+
+            
         }
 
     }

@@ -284,7 +284,7 @@ namespace SelectableRecorder
 
         private void Button_tools_Click(object sender, RoutedEventArgs e)
         {
-            SubWindowTools subWindow = new SubWindowTools();
+            SubWindowTools subWindow = new SubWindowTools(this);
             subWindow.Show();
         }
 
