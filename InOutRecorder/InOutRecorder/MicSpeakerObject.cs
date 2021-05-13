@@ -288,17 +288,31 @@ namespace SelectableRecorder
         {
             Thread.Sleep(2000);
 
-            var mixer = new WaveMixerStream32 { AutoStop = true };
-            var wav1 = new WaveFileReader(currentRecordPathFile_micExt);
-            var wav2 = new WaveFileReader(currentRecordPathFile_loopbackExt);
+            //var mixer = new WaveMixerStream32 { AutoStop = true };
+            //var wav1 = new WaveFileReader(currentRecordPathFile_micExt);
+            //var wav2 = new WaveFileReader(currentRecordPathFile_loopbackExt);
 
-            var waveChan1 = new WaveChannel32(wav1);
-            //  waveChan1.Volume = 10.0f;
-            mixer.AddInputStream(waveChan1);
-            var waveChan2 = new WaveChannel32(wav2);
-            waveChan2.Volume = 0.5f;
-            mixer.AddInputStream(waveChan2);
-            WaveFileWriter.CreateWaveFile(currentRecordPathFile_mixedExt, mixer);
+            //var waveChan1 = new WaveChannel32(wav1);
+            ////  waveChan1.Volume = 10.0f;
+            //mixer.AddInputStream(waveChan1);
+            //var waveChan2 = new WaveChannel32(wav2);
+            //waveChan2.Volume = 0.5f;
+            //mixer.AddInputStream(waveChan2);
+            //WaveFileWriter.CreateWaveFile(currentRecordPathFile_mixedExt, mixer);
+
+            const int rate = 48000;
+            //const int bits = 32;
+            const int channels = 2;
+            //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
+            WaveFormat wave_format = WaveFormat.CreateIeeeFloatWaveFormat(rate, channels);
+            var wav1 = new AudioFileReader(currentRecordPathFile_micExt);
+            var wav2 = new AudioFileReader(currentRecordPathFile_loopbackExt);
+
+           // var mixer = new MixingSampleProvider(wave_format);
+            var mixer = new MixingSampleProvider(new[] { wav1, wav2 });
+            //mixer.AddMixerInput(wav1.ToWaveProvider());
+            //   mixer.AddMixerInput(wav2.ToWaveProvider());
+            WaveFileWriter.CreateWaveFile(currentRecordPathFile_mixedExt, mixer.ToWaveProvider());
         }
     }
 }
