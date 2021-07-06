@@ -39,9 +39,15 @@ namespace SelectableRecorder
         {
 
             mixing();
+            this.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                FileConverter fileConverter = new FileConverter();
 
-            FileConverter fileConverter = new FileConverter();
-            fileConverter.startConvert(_outputPath, Path.GetFileNameWithoutExtension(_fileOutputWavFullExt), _fileOutputWavFullExt, 12);
+                List<string> files_list = new List<string>
+                    { _micPath , _loopBackPath };
+                fileConverter.startConvert(_outputPath, Path.GetFileNameWithoutExtension(_fileOutputWavFullExt), _fileOutputWavFullExt, 12, files_list);
+
+            }));
         }
 
         private void Button_output_folder_Click_1(object sender, RoutedEventArgs e)

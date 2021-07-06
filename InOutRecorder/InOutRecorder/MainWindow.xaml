@@ -151,6 +151,7 @@
                 <Border Grid.Row="6" BorderBrush="Gainsboro" BorderThickness="1">
                     <Grid Height="23" Margin="5">
                         <TextBlock x:Name="textBlock_timer" Text="" HorizontalAlignment="Center" />
+                        <CheckBox x:Name="checkBox_convertMicSpeaker" Content="Convert mic and speaker" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
                     </Grid>
                 </Border>
                 <!--<Grid.ColumnDefinitions>

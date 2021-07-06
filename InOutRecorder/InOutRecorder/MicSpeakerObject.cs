@@ -280,7 +280,14 @@ namespace SelectableRecorder
                     recording = false;
                     statusRecording = statusFlag.None;
                     mixing();
-                    fileConverter.startConvert(windows.TextBox_path.Text, currentRecordPathFile_mixed, currentRecordPathFile_mixedExt, 12);
+                    List<string> files_list = null;
+                    if (windows.checkBox_convertMicSpeaker.IsChecked.Value)
+                    {
+                        files_list = new List<string>
+                            { currentRecordPathFile_micExt , currentRecordPathFile_loopbackExt };
+                    }
+                   
+                    fileConverter.startConvert(windows.TextBox_path.Text, currentRecordPathFile_mixed, currentRecordPathFile_mixedExt, 12, files_list);
                 }
             }
         }

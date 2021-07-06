@@ -151,7 +151,7 @@ namespace SelectableRecorder
             {
                 wavWriter?.Dispose();
                 wavWriter = null;
-                fileConverter.startConvert(windows.TextBox_path.Text, currentRecordFile, currentRecordPathFile, 12);
+                fileConverter.startConvert(windows.TextBox_path.Text, currentRecordFile, currentRecordPathFile, 12, null);
             }
             setCapture(selectedDevice);
         }
