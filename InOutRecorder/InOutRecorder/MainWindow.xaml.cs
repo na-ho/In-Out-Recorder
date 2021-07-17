@@ -78,9 +78,17 @@ namespace SelectableRecorder
             appInfo.deviceTwoSourceIndexMic = cmb_deviceSelectTwoSource_1.SelectedIndex;
             appInfo.deviceTwoSourceIndexSpeaker = cmb_deviceSelectTwoSource_2.SelectedIndex;
 
+            appInfo.strDeviceName = cmb_devices.Text;
+            appInfo.strTwoSourceMicName = cmb_deviceSelectTwoSource_1.Text;
+            appInfo.strTwoSourceSpeakerDeviceName = cmb_deviceSelectTwoSource_2.Text;
+
             using (FileStream writer = new FileStream("app.json", FileMode.Create))
             {
-                Utf8Json.JsonSerializer.Serialize(writer, appInfo, Utf8Json.Resolvers.StandardResolver.Default);
+                // Utf8Json.JsonSerializer.Serialize(writer, appInfo, Utf8Json.Resolvers.StandardResolver.Default);
+                var result = Utf8Json.JsonSerializer.Serialize(appInfo);
+                var pretty = Utf8Json.JsonSerializer.PrettyPrintByteArray(result);
+                //Utf8Json.JsonSerializer.Serialize(writer, pretty);
+                writer.Write(pretty, 0, pretty.Length);
             }
         }
 
@@ -142,40 +150,110 @@ namespace SelectableRecorder
                 cmb_deviceSelectTwoSource_1.ItemsSource = listDevices_Microphone;
                 cmb_deviceSelectTwoSource_2.ItemsSource = listDevices_Speaker;
 
+                //if (cmb_deviceSelectTwoSource_1.Items.Count > 0)
+                //{
+                //    if (appInfo.deviceTwoSourceIndexMic >= listDevices_Microphone.Count || appInfo.deviceTwoSourceIndexMic == -1)
+                //    {
+                //        appInfo.deviceTwoSourceIndexMic = 0;
+                //        cmb_deviceSelectTwoSource_1.SelectedIndex = appInfo.deviceTwoSourceIndexMic;
+                //    }
+                //    else
+                //    {
+                //        cmb_deviceSelectTwoSource_1.SelectedIndex = appInfo.deviceTwoSourceIndexMic;
+                //    }
+
+                //    micSpeakerObject.selectDevice_Mic(listDevices_Microphone[appInfo.deviceTwoSourceIndexMic]);
+                //}
+
+                //if (cmb_deviceSelectTwoSource_2.Items.Count > 0)
+                //{
+                //    if (appInfo.deviceTwoSourceIndexSpeaker >= listDevices_Speaker.Count || appInfo.deviceTwoSourceIndexSpeaker == -1)
+                //    {
+                //        appInfo.deviceTwoSourceIndexSpeaker = 0;
+                //        cmb_deviceSelectTwoSource_2.SelectedIndex = appInfo.deviceTwoSourceIndexSpeaker;
+                //    }
+                //    else
+                //    {
+                //        cmb_deviceSelectTwoSource_2.SelectedIndex = appInfo.deviceTwoSourceIndexSpeaker;
+                //    }
+
+                //    micSpeakerObject.selectDevice_Speaker(listDevices_Speaker[appInfo.deviceTwoSourceIndexSpeaker]);
+                //}
+
                 if (cmb_deviceSelectTwoSource_1.Items.Count > 0)
                 {
-                    if (appInfo.deviceTwoSourceIndexMic >= listDevices_Microphone.Count || appInfo.deviceTwoSourceIndexMic == -1)
+                    //if (appInfo.deviceTwoSourceIndexMic >= listDevices_Microphone.Count || appInfo.deviceTwoSourceIndexMic == -1)
+                    //{
+                    //    appInfo.deviceTwoSourceIndexMic = 0;
+                    //    cmb_deviceSelectTwoSource_1.SelectedIndex = appInfo.deviceTwoSourceIndexMic;
+                    //}
+                    //else
+                    //{
+                    //    cmb_deviceSelectTwoSource_1.SelectedIndex = appInfo.deviceTwoSourceIndexMic;
+                    //}
+                    (var device_microphone, int index_microphone) = searchListMMDevice(appInfo.strTwoSourceMicName, listDevices_Microphone);
+                    appInfo.deviceTwoSourceIndexMic = index_microphone;
+                    if (device_microphone != null)
                     {
-                        appInfo.deviceTwoSourceIndexMic = 0;
-                        cmb_deviceSelectTwoSource_1.SelectedIndex = appInfo.deviceTwoSourceIndexMic;
+                        micSpeakerObject.selectDevice_Mic(device_microphone);
+                        cmb_deviceSelectTwoSource_1.SelectedIndex = index_microphone;
                     }
                     else
                     {
+                        appInfo.strTwoSourceMicName = listDevices_Microphone[index_microphone].FriendlyName;
                         cmb_deviceSelectTwoSource_1.SelectedIndex = appInfo.deviceTwoSourceIndexMic;
+                        micSpeakerObject.selectDevice_Mic(listDevices_Microphone[index_microphone]);
                     }
-
-                    micSpeakerObject.selectDevice_Mic(listDevices_Microphone[appInfo.deviceTwoSourceIndexMic]);
+                   
                 }
 
                 if (cmb_deviceSelectTwoSource_2.Items.Count > 0)
                 {
-                    if (appInfo.deviceTwoSourceIndexSpeaker >= listDevices_Speaker.Count || appInfo.deviceTwoSourceIndexSpeaker == -1)
+                    //if (appInfo.deviceTwoSourceIndexSpeaker >= listDevices_Speaker.Count || appInfo.deviceTwoSourceIndexSpeaker == -1)
+                    //{
+                    //    appInfo.deviceTwoSourceIndexSpeaker = 0;
+                    //    cmb_deviceSelectTwoSource_2.SelectedIndex = appInfo.deviceTwoSourceIndexSpeaker;
+                    //}
+                    //else
+                    //{
+                    //    cmb_deviceSelectTwoSource_2.SelectedIndex = appInfo.deviceTwoSourceIndexSpeaker;
+                    //}
+
+                    //micSpeakerObject.selectDevice_Speaker(listDevices_Speaker[appInfo.deviceTwoSourceIndexSpeaker]);
+
+                   (var device_speaker, int index_speaker) = searchListMMDevice(appInfo.strTwoSourceSpeakerDeviceName, listDevices_Speaker);
+                    appInfo.deviceTwoSourceIndexSpeaker = index_speaker;
+                    if (device_speaker != null)
                     {
-                        appInfo.deviceTwoSourceIndexSpeaker = 0;
-                        cmb_deviceSelectTwoSource_2.SelectedIndex = appInfo.deviceTwoSourceIndexSpeaker;
+                        micSpeakerObject.selectDevice_Speaker(device_speaker);
+                        cmb_deviceSelectTwoSource_2.SelectedIndex = index_speaker;
                     }
                     else
                     {
+                        
                         cmb_deviceSelectTwoSource_2.SelectedIndex = appInfo.deviceTwoSourceIndexSpeaker;
+                        appInfo.strTwoSourceSpeakerDeviceName = listDevices_Speaker[index_speaker].FriendlyName;
+                        micSpeakerObject.selectDevice_Speaker(listDevices_Speaker[index_speaker]);
                     }
-
-                    micSpeakerObject.selectDevice_Speaker(listDevices_Speaker[appInfo.deviceTwoSourceIndexSpeaker]);
                 }
 
                 micSpeakerObject.startListening();
             }));
         }
 
+        private (MMDevice, int) searchListMMDevice(string keyword, List<MMDevice> list)
+        {
+            if (keyword == null) return (null,0);
+            // foreach (var device in list)
+            for (int idx_device = 0; idx_device < list.Count; idx_device++)
+            {
+                if (list[idx_device].FriendlyName == keyword)
+                {
+                    return (list[idx_device], idx_device);
+                }
+            }
+            return (null, 0);
+        }
 
         private void button_record_Click(object sender, RoutedEventArgs e)
         {
