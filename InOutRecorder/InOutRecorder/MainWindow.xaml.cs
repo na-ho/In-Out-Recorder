@@ -241,18 +241,41 @@ namespace SelectableRecorder
             }));
         }
 
+        //private (MMDevice, int) searchListMMDevice(string keyword, List<MMDevice> list)
+        //{
+        //    if (keyword == null) return (null,0);
+        //    // foreach (var device in list)
+        //    for (int idx_device = 0; idx_device < list.Count; idx_device++)
+        //    {
+        //        if (list[idx_device].FriendlyName == keyword)
+        //        {
+        //            return (list[idx_device], idx_device);
+        //        }
+        //    }
+        //    return (null, 0);
+        //}
+
         private (MMDevice, int) searchListMMDevice(string keyword, List<MMDevice> list)
         {
-            if (keyword == null) return (null,0);
+            if (keyword == null) return (null, 0);
             // foreach (var device in list)
-            for (int idx_device = 0; idx_device < list.Count; idx_device++)
+            //for (int idx_device = 0; idx_device < list.Count; idx_device++)
+            //{
+            //    if (list[idx_device].FriendlyName == keyword)
+            //    {
+            //        return (list[idx_device], idx_device);
+            //    }
+            //}
+
+            List<int> matchList = new List<int>();
+            for (int idx_device_loop = 0; idx_device_loop < list.Count; idx_device_loop++)
             {
-                if (list[idx_device].FriendlyName == keyword)
-                {
-                    return (list[idx_device], idx_device);
-                }
+                matchList.Add(Utils.LevenshteinDistance(list[idx_device_loop].FriendlyName, keyword));
             }
-            return (null, 0);
+            int idx_device = matchList.IndexOf(matchList.Min());
+         //   string match = tracksList.ElementAt();
+            return (list[idx_device], idx_device);
+          //  return (null, 0);
         }
 
         private void button_record_Click(object sender, RoutedEventArgs e)

@@ -1,1 +1,9 @@
-{"deviceIndex":0,"strOutputPath":"C:\\A\\Projects\\Sound\\Recorder\\Doing\\C#\\output","deviceTwoSourceIndexMic":1,"deviceTwoSourceIndexSpeaker":1}
+{
+  "deviceIndex": 0,
+  "strDeviceName": "Microphone (DroidCam Virtual Audio)",
+  "strOutputPath": "C:\\A\\Projects\\Sound\\Recorder\\Doing\\C#\\output",
+  "deviceTwoSourceIndexMic": 1,
+  "deviceTwoSourceIndexSpeaker": 1,
+  "strTwoSourceMicName": "Microphone (Maono AU-PM401)",
+  "strTwoSourceSpeakerDeviceName": "Headphones (3- Meizu HiFi DAC Headphone Amplifier PRO)"
+}
