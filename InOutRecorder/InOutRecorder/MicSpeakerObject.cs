@@ -29,6 +29,7 @@ namespace SelectableRecorder
         WaveFileWriter writer_Loopback;
         IWaveIn newWaveIn_Mic;
         IWaveIn newWaveIn_Loopback;
+        WasapiOut wasapiOut_Loopback;
 
         public MMDevice Mic { get => device_mic; set => device_mic = value; }
         public MMDevice Loopback { get => device_loopback; set => device_loopback = value; }
@@ -148,6 +149,9 @@ namespace SelectableRecorder
                 newWaveIn_Loopback.RecordingStopped -= OnRecordingStopped_LoopBack;
                 newWaveIn_Loopback?.Dispose();
                 newWaveIn_Loopback = null;
+
+                wasapiOut_Loopback.Stop();
+                wasapiOut_Loopback = null;
             }
         }
 
@@ -172,9 +176,24 @@ namespace SelectableRecorder
             {
                 stopListening_Loopback();
                 newWaveIn_Loopback = new WasapiLoopbackCapture(deviceSpeaker);
+
+                var silenceProvider = new SilenceProvider(newWaveIn_Loopback.WaveFormat);
+                wasapiOut_Loopback = new WasapiOut(deviceSpeaker, AudioClientShareMode.Shared, false, 0);
+                wasapiOut_Loopback.Init(silenceProvider);
+                
+
                 newWaveIn_Loopback.DataAvailable += OnDataAvailable_LoopBack;
                 newWaveIn_Loopback.RecordingStopped += OnRecordingStopped_LoopBack;
+
+                wasapiOut_Loopback.Play();
                 newWaveIn_Loopback.StartRecording();
+
+                //using (wasapiOut_Loopback = new WasapiOut(deviceSpeaker, AudioClientShareMode.Shared, false, 0))
+                //{
+                //    wasapiOut_Loopback.Init(silenceProvider);
+                //    wasapiOut_Loopback.Play();
+                //}
+
             }
 
         }
