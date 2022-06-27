@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SelectableRecorder"
         mc:Ignorable="d"
-        Title="SelectableRecorder" Height="450" Width="800">
+        Title="SelectableRecorder" Height="500" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="6*"/>
@@ -21,6 +21,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.5*"/>
 
                 </Grid.RowDefinitions>
                 <Border Grid.Row="0" BorderBrush="Gainsboro" BorderThickness="1">
@@ -112,7 +113,7 @@
                             <TextBlock Text="File Name (changed when start):"/>
                         </Grid>
                         <Grid Grid.Column="1">
-                            
+
                             <Grid  Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
@@ -152,6 +153,17 @@
                     <Grid Height="23" Margin="5">
                         <TextBlock x:Name="textBlock_timer" Text="" HorizontalAlignment="Center" />
                         <CheckBox x:Name="checkBox_convertMicSpeaker" Content="Convert mic and speaker" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="7" BorderBrush="Gainsboro" BorderThickness="1">
+                    <Grid Height="23" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Compression level : "/>
+                        <ComboBox Grid.Column="1" Margin="0,0,0,0" Name="ComboBox_comp_level" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" >
+                        </ComboBox>
                     </Grid>
                 </Border>
                 <!--<Grid.ColumnDefinitions>

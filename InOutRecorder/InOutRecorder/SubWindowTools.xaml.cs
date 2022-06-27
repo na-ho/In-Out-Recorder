@@ -45,8 +45,13 @@ namespace SelectableRecorder
 
                 List<string> files_list = new List<string>
                     { _micPath , _loopBackPath };
-                fileConverter.startConvert(_outputPath, Path.GetFileNameWithoutExtension(_fileOutputWavFullExt), _fileOutputWavFullExt, 12, files_list);
+                //fileConverter.startConvert(_outputPath, Path.GetFileNameWithoutExtension(_fileOutputWavFullExt), _fileOutputWavFullExt, 12, files_list);
 
+                _mainWindow.Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    int compression_level = _mainWindow.ComboBox_comp_level.SelectedIndex;
+                    fileConverter.startConvert(_outputPath, Path.GetFileNameWithoutExtension(_fileOutputWavFullExt), _fileOutputWavFullExt, compression_level, files_list);
+                }));
             }));
         }
 
@@ -136,8 +141,26 @@ namespace SelectableRecorder
             const int channels = 2;
             //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
             WaveFormat wave_format = WaveFormat.CreateIeeeFloatWaveFormat(rate, channels);
-            var wav1 = new AudioFileReader(_micPath);
-            var wav2 = new AudioFileReader(_loopBackPath);
+
+            AudioFileReader wav1 = null;
+            try
+            {
+                wav1 = new AudioFileReader(_micPath);
+            }
+            catch (System.FormatException exp)
+            {
+                System.Windows.MessageBox.Show(_micPath + " : " + exp.Message);
+            }
+
+            AudioFileReader wav2 = null;
+            try
+            {
+                wav2   = new AudioFileReader(_loopBackPath);
+            } 
+            catch(System.FormatException exp)
+            {
+                System.Windows.MessageBox.Show(_loopBackPath + " : " + exp.Message);
+            }
 
             if (TextBox_LevelMic.Text.Length > 0)
             {

@@ -151,7 +151,13 @@ namespace SelectableRecorder
             {
                 wavWriter?.Dispose();
                 wavWriter = null;
-                fileConverter.startConvert(windows.TextBox_path.Text, currentRecordFile, currentRecordPathFile, 12, null);
+               // fileConverter.startConvert(windows.TextBox_path.Text, currentRecordFile, currentRecordPathFile, 12, null);
+
+                windows.Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    int compression_level = windows.ComboBox_comp_level.SelectedIndex;
+                    fileConverter.startConvert(windows.TextBox_path.Text, currentRecordFile, currentRecordPathFile, compression_level, null);
+                }));
             }
             setCapture(selectedDevice);
         }

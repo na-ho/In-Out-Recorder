@@ -3,7 +3,8 @@
   "strDeviceName": "Microphone (Maono AU-PM401)",
   "strOutputPath": "C:\\A\\Projects\\Sound\\Recorder\\Doing\\C#\\output",
   "deviceTwoSourceIndexMic": 0,
-  "deviceTwoSourceIndexSpeaker": 1,
+  "deviceTwoSourceIndexSpeaker": 3,
   "strTwoSourceMicName": "Microphone (Maono AU-PM401)",
-  "strTwoSourceSpeakerDeviceName": "Headphones (7- Meizu HiFi DAC Headphone Amplifier PRO)"
+  "strTwoSourceSpeakerDeviceName": "Headset (USB-C to 3.5mm Headphone Jack Adapter)",
+  "compression_level": 5
 }

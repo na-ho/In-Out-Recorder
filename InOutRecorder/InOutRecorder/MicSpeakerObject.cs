@@ -186,7 +186,16 @@ namespace SelectableRecorder
                 newWaveIn_Loopback.RecordingStopped += OnRecordingStopped_LoopBack;
 
                 wasapiOut_Loopback.Play();
-                newWaveIn_Loopback.StartRecording();
+                try
+                {
+                    newWaveIn_Loopback.StartRecording();
+                }
+                catch
+                {
+                    // not work
+                    System.Windows.MessageBox.Show("Recording problem");
+                }
+                
 
                 //using (wasapiOut_Loopback = new WasapiOut(deviceSpeaker, AudioClientShareMode.Shared, false, 0))
                 //{
@@ -306,7 +315,14 @@ namespace SelectableRecorder
                             { currentRecordPathFile_micExt , currentRecordPathFile_loopbackExt };
                     }
                    
-                    fileConverter.startConvert(windows.TextBox_path.Text, currentRecordPathFile_mixed, currentRecordPathFile_mixedExt, 12, files_list);
+                    //fileConverter.startConvert(windows.TextBox_path.Text, currentRecordPathFile_mixed, currentRecordPathFile_mixedExt, 12, files_list);
+
+                    windows.Dispatcher.BeginInvoke((Action)(() =>
+                    {
+                        int compression_level = windows.ComboBox_comp_level.SelectedIndex;
+                        fileConverter.startConvert(windows.TextBox_path.Text, currentRecordPathFile_mixed, currentRecordPathFile_mixedExt, compression_level, files_list);
+                    }));
+
                 }
             }
         }

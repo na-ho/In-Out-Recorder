@@ -15,5 +15,7 @@ namespace SelectableRecorder
 
         public string strTwoSourceMicName = null;
         public string strTwoSourceSpeakerDeviceName = null;
+
+        public int compression_level = 5;
     }
 }

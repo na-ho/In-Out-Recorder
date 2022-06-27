@@ -67,6 +67,8 @@ namespace SelectableRecorder
             {
                 appInfo = Utf8Json.JsonSerializer.Deserialize<AppInfo>(reader, Utf8Json.Resolvers.StandardResolver.Default);
                 TextBox_path.Text = appInfo.strOutputPath;
+
+                this.ComboBox_comp_level.SelectedIndex = appInfo.compression_level;
             }
 
         }
@@ -81,6 +83,7 @@ namespace SelectableRecorder
             appInfo.strDeviceName = cmb_devices.Text;
             appInfo.strTwoSourceMicName = cmb_deviceSelectTwoSource_1.Text;
             appInfo.strTwoSourceSpeakerDeviceName = cmb_deviceSelectTwoSource_2.Text;
+            appInfo.compression_level = ComboBox_comp_level.SelectedIndex;
 
             using (FileStream writer = new FileStream("app.json", FileMode.Create))
             {
@@ -95,6 +98,7 @@ namespace SelectableRecorder
         public void Startup()
         {
             loadAppInfo();
+            InitItemsProperty();
 
             fileConverter = new FileConverter();
             fileConverter.windows = this;
@@ -112,6 +116,24 @@ namespace SelectableRecorder
 
             startWASAPI();
             setBaseInfo();
+
+
+        }
+
+
+        private void InitItemsProperty()
+        {
+            for(int index = 0; index <= 12; ++index)
+            {
+                if(index == 5)
+                {
+                    this.ComboBox_comp_level.Items.Add(index + " (default)");
+                } else
+                {
+                    this.ComboBox_comp_level.Items.Add(index);
+                }
+                
+            }
         }
 
         private void setBaseInfo()
@@ -204,7 +226,7 @@ namespace SelectableRecorder
                         cmb_deviceSelectTwoSource_1.SelectedIndex = appInfo.deviceTwoSourceIndexMic;
                         micSpeakerObject.selectDevice_Mic(listDevices_Microphone[index_microphone]);
                     }
-                   
+
                 }
 
                 if (cmb_deviceSelectTwoSource_2.Items.Count > 0)
@@ -221,7 +243,7 @@ namespace SelectableRecorder
 
                     //micSpeakerObject.selectDevice_Speaker(listDevices_Speaker[appInfo.deviceTwoSourceIndexSpeaker]);
 
-                   (var device_speaker, int index_speaker) = searchListMMDevice(appInfo.strTwoSourceSpeakerDeviceName, listDevices_Speaker);
+                    (var device_speaker, int index_speaker) = searchListMMDevice(appInfo.strTwoSourceSpeakerDeviceName, listDevices_Speaker);
                     appInfo.deviceTwoSourceIndexSpeaker = index_speaker;
                     if (device_speaker != null)
                     {
@@ -230,7 +252,7 @@ namespace SelectableRecorder
                     }
                     else
                     {
-                        
+
                         cmb_deviceSelectTwoSource_2.SelectedIndex = appInfo.deviceTwoSourceIndexSpeaker;
                         appInfo.strTwoSourceSpeakerDeviceName = listDevices_Speaker[index_speaker].FriendlyName;
                         micSpeakerObject.selectDevice_Speaker(listDevices_Speaker[index_speaker]);
@@ -273,9 +295,9 @@ namespace SelectableRecorder
                 matchList.Add(Utils.LevenshteinDistance(list[idx_device_loop].FriendlyName, keyword));
             }
             int idx_device = matchList.IndexOf(matchList.Min());
-         //   string match = tracksList.ElementAt();
+            //   string match = tracksList.ElementAt();
             return (list[idx_device], idx_device);
-          //  return (null, 0);
+            //  return (null, 0);
         }
 
         private void button_record_Click(object sender, RoutedEventArgs e)
