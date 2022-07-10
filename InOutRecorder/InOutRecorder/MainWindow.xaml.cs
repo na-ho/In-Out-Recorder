@@ -415,5 +415,16 @@ namespace SelectableRecorder
         {
             throw new NotImplementedException();
         }
+
+        private void Button_CopyTime_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(selectedMethod.getCurrentStopWatchElapsedTime());
+        }
+
+        private void button_open_where_Click(object sender, RoutedEventArgs e)
+        {
+            string str_current_dir = System.IO.Directory.GetCurrentDirectory();
+            Process.Start("explorer.exe", str_current_dir);
+        }
     }
 }

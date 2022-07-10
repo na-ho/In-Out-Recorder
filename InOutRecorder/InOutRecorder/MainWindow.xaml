@@ -153,6 +153,7 @@
                     <Grid Height="23" Margin="5">
                         <TextBlock x:Name="textBlock_timer" Text="" HorizontalAlignment="Center" />
                         <CheckBox x:Name="checkBox_convertMicSpeaker" Content="Convert mic and speaker" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
+                        <Button Name="button_copy_time" Content="Copy Time" HorizontalAlignment="right" Click="Button_CopyTime_Click"/>
                     </Grid>
                 </Border>
                 <Border Grid.Row="7" BorderBrush="Gainsboro" BorderThickness="1">
@@ -160,10 +161,12 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Compression level : "/>
                         <ComboBox Grid.Column="1" Margin="0,0,0,0" Name="ComboBox_comp_level" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" >
                         </ComboBox>
+                        <Button Grid.Column="2" Name="button_open_where" Content="Open Prog" Click="button_open_where_Click"/>
                     </Grid>
                 </Border>
                 <!--<Grid.ColumnDefinitions>

@@ -78,5 +78,15 @@ namespace SelectableRecorder
             }));
         }
 
+        public string getCurrentStopWatchElapsedTime()
+        {
+            TimeSpan ts = stopWatch.Elapsed;
+
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}",
+                ts.Hours, ts.Minutes, ts.Seconds);
+
+            return elapsedTime;
+        }
+
     }
 }

@@ -3,7 +3,7 @@
   "strDeviceName": "Microphone (Maono AU-PM401)",
   "strOutputPath": "C:\\A\\Projects\\Sound\\Recorder\\Doing\\C#\\output",
   "deviceTwoSourceIndexMic": 0,
-  "deviceTwoSourceIndexSpeaker": 3,
+  "deviceTwoSourceIndexSpeaker": 1,
   "strTwoSourceMicName": "Microphone (Maono AU-PM401)",
   "strTwoSourceSpeakerDeviceName": "Headset (USB-C to 3.5mm Headphone Jack Adapter)",
   "compression_level": 5
