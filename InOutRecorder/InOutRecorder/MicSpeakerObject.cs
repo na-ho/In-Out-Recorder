@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define WASAPI
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+
 
 namespace SelectableRecorder
 {
@@ -29,7 +32,11 @@ namespace SelectableRecorder
         WaveFileWriter writer_Loopback;
         IWaveIn newWaveIn_Mic;
         IWaveIn newWaveIn_Loopback;
+#if WASAPI
         WasapiOut wasapiOut_Loopback;
+#else
+        WaveOutEvent waveOut_Loopback;
+#endif
 
         public MMDevice Mic { get => device_mic; set => device_mic = value; }
         public MMDevice Loopback { get => device_loopback; set => device_loopback = value; }
@@ -150,8 +157,13 @@ namespace SelectableRecorder
                 newWaveIn_Loopback?.Dispose();
                 newWaveIn_Loopback = null;
 
+#if WASAPI
                 wasapiOut_Loopback.Stop();
                 wasapiOut_Loopback = null;
+#else
+                waveOut_Loopback.Stop();
+                waveOut_Loopback = null;
+#endif
             }
         }
 
@@ -177,15 +189,22 @@ namespace SelectableRecorder
                 stopListening_Loopback();
                 newWaveIn_Loopback = new WasapiLoopbackCapture(deviceSpeaker);
 
-                var silenceProvider = new SilenceProvider(newWaveIn_Loopback.WaveFormat);
-                wasapiOut_Loopback = new WasapiOut(deviceSpeaker, AudioClientShareMode.Shared, false, 0);
-                wasapiOut_Loopback.Init(silenceProvider);
-                
-
                 newWaveIn_Loopback.DataAvailable += OnDataAvailable_LoopBack;
                 newWaveIn_Loopback.RecordingStopped += OnRecordingStopped_LoopBack;
 
+                var silenceProvider = new SilenceProvider(newWaveIn_Loopback.WaveFormat);
+
+#if WASAPI
+                wasapiOut_Loopback = new WasapiOut(deviceSpeaker, AudioClientShareMode.Shared, false, 0);
+                wasapiOut_Loopback.Init(silenceProvider);
                 wasapiOut_Loopback.Play();
+#else
+
+                waveOut_Loopback = new WaveOutEvent();
+                waveOut_Loopback.Init(silenceProvider);
+                waveOut_Loopback.Play();
+#endif
+
                 try
                 {
                     newWaveIn_Loopback.StartRecording();
