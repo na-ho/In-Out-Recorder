@@ -77,7 +77,17 @@ namespace SelectableRecorder
             }));
             currentRecordPathFile = System.IO.Path.Combine(windows.TextBox_path.Text, outputFilename);
             setCapture(selectedDevice);
+
+            //    var test = newWaveIn.WaveFormat;
             wavWriter = new WaveFileWriter(filename: currentRecordPathFile, newWaveIn.WaveFormat);
+
+          //  const int rate = 48000;
+            //const int bits = 32;
+         //   const int channels = 2;
+            //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
+
+         //   WaveFormat wave_format = WaveFormat.CreateIeeeFloatWaveFormat(rate, channels);
+         //   wavWriter = new WaveFileWriter(filename: currentRecordPathFile, wave_format);
 
             stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -140,6 +150,12 @@ namespace SelectableRecorder
         {
             stopListening();
             newWaveIn = new WasapiCapture(device);
+
+            //const int rate = 48000;
+            //const int bits = 24;
+            //const int channels = 2;
+            //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
+            //newWaveIn.WaveFormat = wave_format;
             newWaveIn.DataAvailable += OnDataAvailable;
             newWaveIn.RecordingStopped += OnRecordingStopped;
             newWaveIn.StartRecording();
@@ -156,7 +172,7 @@ namespace SelectableRecorder
                 windows.Dispatcher.BeginInvoke((Action)(() =>
                 {
                     int compression_level = windows.ComboBox_comp_level.SelectedIndex;
-                    fileConverter.startConvert(windows.TextBox_path.Text, currentRecordFile, currentRecordPathFile, compression_level, null);
+                    fileConverter.startConvert(windows.TextBox_path.Text, currentRecordFile, currentRecordPathFile, compression_level, 32, null);
                 }));
             }
             setCapture(selectedDevice);

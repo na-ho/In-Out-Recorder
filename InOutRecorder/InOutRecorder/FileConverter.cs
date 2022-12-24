@@ -9,7 +9,7 @@ namespace SelectableRecorder
     class FileConverter
     {
         public MainWindow windows = null;
-        public void startConvert(string outputFolder, string currentRecordFileWithoutExt, string currentRecordPathFile, int levelCompression, List<string> files_to_encode)
+        public void startConvert(string outputFolder, string currentRecordFileWithoutExt, string currentRecordPathFile, int levelCompression, int bits, List<string> files_to_encode)
         {
             string outputFilename = currentRecordFileWithoutExt + ".flac";
             if (windows != null)
@@ -31,6 +31,8 @@ namespace SelectableRecorder
                 command += " -compression_level " + levelCompression;
             }
 
+          //  command += " -sample_fmt s" + bits;
+
             command += " \"";
             command += outputFullPath;
             command += "\"";
@@ -51,6 +53,8 @@ namespace SelectableRecorder
                     {
                         command_file += " -compression_level " + levelCompression;
                     }
+
+                 //   command += " -sample_fmt s" + bits;
 
                     command_file += " \"";
                     command_file += output_file;

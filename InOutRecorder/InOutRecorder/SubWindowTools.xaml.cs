@@ -50,7 +50,7 @@ namespace SelectableRecorder
                 _mainWindow.Dispatcher.BeginInvoke((Action)(() =>
                 {
                     int compression_level = _mainWindow.ComboBox_comp_level.SelectedIndex;
-                    fileConverter.startConvert(_outputPath, Path.GetFileNameWithoutExtension(_fileOutputWavFullExt), _fileOutputWavFullExt, compression_level, files_list);
+                    fileConverter.startConvert(_outputPath, Path.GetFileNameWithoutExtension(_fileOutputWavFullExt), _fileOutputWavFullExt, compression_level, 32, files_list);
                 }));
             }));
         }

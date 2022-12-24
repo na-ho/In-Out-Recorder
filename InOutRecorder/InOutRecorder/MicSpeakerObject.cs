@@ -179,6 +179,15 @@ namespace SelectableRecorder
             {
                 stopListening_Mic();
                 newWaveIn_Mic = new WasapiCapture(deviceMic);
+                //   var test = deviceMic.AudioClient.MixFormat.BitsPerSample;
+                //  var test1 = newWaveIn_Mic.WaveFormat.BitsPerSample;
+
+                //const int rate = 48000;
+                //const int bits = 24;
+                //const int channels = 2;
+                //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
+                //newWaveIn_Mic.WaveFormat = wave_format;
+
                 newWaveIn_Mic.DataAvailable += OnDataAvailable_Mic;
                 newWaveIn_Mic.RecordingStopped += OnRecordingStopped_Mic;
                 newWaveIn_Mic.StartRecording();
@@ -188,6 +197,13 @@ namespace SelectableRecorder
             {
                 stopListening_Loopback();
                 newWaveIn_Loopback = new WasapiLoopbackCapture(deviceSpeaker);
+                // var test = newWaveIn_Loopback.WaveFormat.BitsPerSample;
+
+                //const int rate = 48000;
+                //const int bits = 24;
+                //const int channels = 2;
+                //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
+                //newWaveIn_Loopback.WaveFormat = wave_format;
 
                 newWaveIn_Loopback.DataAvailable += OnDataAvailable_LoopBack;
                 newWaveIn_Loopback.RecordingStopped += OnRecordingStopped_LoopBack;
@@ -339,7 +355,7 @@ namespace SelectableRecorder
                     windows.Dispatcher.BeginInvoke((Action)(() =>
                     {
                         int compression_level = windows.ComboBox_comp_level.SelectedIndex;
-                        fileConverter.startConvert(windows.TextBox_path.Text, currentRecordPathFile_mixed, currentRecordPathFile_mixedExt, compression_level, files_list);
+                        fileConverter.startConvert(windows.TextBox_path.Text, currentRecordPathFile_mixed, currentRecordPathFile_mixedExt, compression_level, 32, files_list);
                     }));
 
                 }
@@ -361,18 +377,22 @@ namespace SelectableRecorder
             //mixer.AddInputStream(waveChan2);
             //WaveFileWriter.CreateWaveFile(currentRecordPathFile_mixedExt, mixer);
 
-            const int rate = 48000;
+            //const int rate = 48000;
             //const int bits = 32;
-            const int channels = 2;
+            //const int channels = 2;
             //WaveFormat wave_format = new WaveFormat(rate, bits, channels);
-            WaveFormat wave_format = WaveFormat.CreateIeeeFloatWaveFormat(rate, channels);
+          //  WaveFormat wave_format = WaveFormat.CreateIeeeFloatWaveFormat(rate, channels);
+
             var wav1 = new AudioFileReader(currentRecordPathFile_micExt);
             var wav2 = new AudioFileReader(currentRecordPathFile_loopbackExt);
 
-           // var mixer = new MixingSampleProvider(wave_format);
+            //    wav1.
+            // var mixer = new MixingSampleProvider(wave_format);
             var mixer = new MixingSampleProvider(new[] { wav1, wav2 });
+
             //mixer.AddMixerInput(wav1.ToWaveProvider());
             //   mixer.AddMixerInput(wav2.ToWaveProvider());
+
             WaveFileWriter.CreateWaveFile(currentRecordPathFile_mixedExt, mixer.ToWaveProvider());
         }
     }
